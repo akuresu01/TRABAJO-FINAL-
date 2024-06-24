@@ -1,0 +1,13 @@
+version: '4.31.1'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    networks:
+      - co2_network
+
+networks:
+  co2_network:
+    driver: bridge
