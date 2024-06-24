@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Huella Ecológica</title>
+    <style>
+        body {
+            background-image: url('huella-ecologica.jpg');
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+        h1 {
+            color: green;
+            font-size: 3em;
+            font-style: italic;
+            font-weight: bold;
+        }
+        label, .result {
+            color: green;
+            font-size: 1.2em;
+        }
+        input[type="number"], input[type="date"] {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid green;
+            font-size: 1em;
+        }
+        input[type="submit"] {
+            background-color: green;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bienvenido!</h1>
+        <form id="co2Form" action="/submit" method="post">
+            <label for="days">Ingresa la cantidad de días a calcular (máximo 10 días):</label><br>
+            <input type="number" id="days" name="days" min="1" max="10" required><br>
+            <label for="daysRegression">Ingresa la cantidad de días a utilizar para la regresión:</label><br>
+            <input type="number" id="daysRegression" name="daysRegression" min="1" max="10" required><br>
+            <label for="date">Ingresa la fecha:</label><br>
+            <input type="date" id="date" name="date" required><br>
+            <label for="milesPerDay">Ingresa las millas por día que desea viajar:</label><br>
+            <input type="number" id="milesPerDay" name="milesPerDay" min="1" required><br>
+            <input type="submit" value="Calcular">
+        </form>
+        <div id="result" class="result"></div>
+    </div>
+    <script>
+        document.getElementById('co2Form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const response = await fetch('/submit', {
+                method: 'POST',
+                body: new URLSearchParams(formData)
+            });
+            const result = await response.json();
+            document.getElementById('result').textContent = result.message;
+        });
+    </script>
+</body>
+</html>
